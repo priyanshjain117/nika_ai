@@ -1,4 +1,4 @@
-# nika_ai
+# Nika Ai
 
 A new Flutter project.
 
