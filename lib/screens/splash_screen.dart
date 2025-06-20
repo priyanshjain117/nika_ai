@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:nika_ai/screens/home.dart';
 import 'package:nika_ai/screens/onboarding_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -16,27 +18,44 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    _startSplashLogic();
+  }
 
-    // Start fade out after 1s
-    Timer(const Duration(milliseconds: 1000), () {
-      setState(() {
-        _opacity = 0.0;
-        _scale=1.5;
-      });
+  Future<void> _startSplashLogic() async {
+    final minSplashTime = Future.delayed(const Duration(seconds: 1));
+    final prefsFuture = _fetchLocalData();
+
+    await Future.wait([minSplashTime, prefsFuture]);
+    final isFirstTime = await prefsFuture;
+
+    setState(() {
+      _opacity = 0.0;
+      _scale = 1.5;
     });
 
-    // Navigate after fade out completes (0.5s later)
-    Timer(const Duration(milliseconds: 1500), () {
-      Navigator.of(context).pushReplacement(
-        PageRouteBuilder(
-          transitionDuration: const Duration(milliseconds: 1000),
-          pageBuilder: (context, animation, secondaryAnimation) => const OnboardingScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return FadeTransition(opacity: animation, child: child);
-          },
-        ),
-      );
-    });
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    if (!mounted) {
+      return;
+    }
+
+    Navigator.of(context).pushReplacement(
+      PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 1000),
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            isFirstTime ? OnboardingScreen() : HomeScreen(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+      ),
+    );
+  }
+
+  Future<bool> _fetchLocalData() async {
+    final storage = await SharedPreferences.getInstance();
+    bool? isFirst;
+    isFirst = (storage.get('isFirstTime') ?? true) as bool;
+    return isFirst;
   }
 
   @override

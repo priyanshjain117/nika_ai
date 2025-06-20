@@ -3,10 +3,26 @@ import 'package:nika_ai/model/onboard.dart';
 import 'package:nika_ai/screens/home.dart';
 import 'package:nika_ai/widgets/custom_animation.dart';
 import 'package:nika_ai/widgets/title_subtitle.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class OnboardingScreen extends StatelessWidget {
-  const OnboardingScreen({super.key, this.animateionName = 'dog'});
-  final String animateionName;
+class OnboardingScreen extends StatefulWidget {
+  const OnboardingScreen({super.key});
+
+  @override
+  State<OnboardingScreen> createState() => _OnboardingScreenState();
+}
+
+class _OnboardingScreenState extends State<OnboardingScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _savingData();
+  }
+
+  Future<void> _savingData() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isFirstTime', false);
+  }
 
   @override
   Widget build(BuildContext context) {
