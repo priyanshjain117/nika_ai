@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nika_ai/model/onboard.dart';
+import 'package:nika_ai/screens/home.dart';
 import 'package:nika_ai/widgets/custom_animation.dart';
 import 'package:nika_ai/widgets/title_subtitle.dart';
 
@@ -9,6 +10,8 @@ class OnboardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final pageCtrl = PageController();
+
     final List<Onboard> list = [
       Onboard(
         title: "Imagination to Reality",
@@ -24,69 +27,99 @@ class OnboardingScreen extends StatelessWidget {
       ),
     ];
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xFFFFC107),
-              Color(0xFFFF5722),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CustomAnimation(
-                name: animateionName,
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              TitleSubtitle(),
-              const SizedBox(
-                height: 30,
-              ),
-              Wrap(
-                spacing: 10,
-                children: List.generate(
-                  2,
-                  (index) => Container(
-                    width: 10,
-                    height: 8,
-                    decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        borderRadius: BorderRadius.circular(5)),
+        body: PageView.builder(
+            controller: pageCtrl,
+            itemCount: list.length,
+            itemBuilder: (context, index) {
+              return Container(
+                width: double.infinity,
+                height: double.infinity,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Color(0xFFFFC107),
+                      Color(0xFFFF5722),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 25,
-              ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  shape: const StadiumBorder(),
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-                  elevation: 1,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Spacer(
+                        flex: 2,
+                      ),
+                      CustomAnimation(
+                        name: list[index].animationName,
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      TitleSubtitle(
+                        title: list[index].title,
+                        subtitle: list[index].subtitle,
+                      ),
+                      Spacer(),
+                      Wrap(
+                        spacing: 10,
+                        children: List.generate(
+                          2,
+                          (idx) => Container(
+                            width: idx == index ? 18 : 10,
+                            height: 8,
+                            decoration: BoxDecoration(
+                                color: idx == index
+                                    ? Theme.of(context).colorScheme.primary
+                                    : const Color.fromARGB(255, 45, 46, 46),
+                                borderRadius: BorderRadius.circular(5)),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 25,
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          shape: const StadiumBorder(),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 30),
+                          elevation: 1,
+                        ),
+                        onPressed: () {
+                          if (index == 0) {
+                            pageCtrl.nextPage(
+                                duration: Duration(
+                                  milliseconds: 600,
+                                ),
+                                curve: Curves.ease);
+                          } else {
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => HomeScreen(),
+                              ),
+                            );
+                          }
+                        },
+                        child: Text(
+                          index == 1 ? "Final" : "Next",
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleLarge!
+                              .copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                  fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                      Spacer()
+                    ],
+                  ),
                 ),
-                onPressed: () {},
-                child: Text(
-                  "Next",
-                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      fontWeight: FontWeight.w600),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+              );
+            }));
   }
 }

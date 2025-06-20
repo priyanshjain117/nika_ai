@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 
 class TitleSubtitle extends StatelessWidget {
-  const TitleSubtitle({super.key});
+  const TitleSubtitle({super.key, required this.title,required this.subtitle,});
+  final String title;
+  final String subtitle;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Text(
-          "Imagination to Reality",
+          title,
           style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -16,7 +18,7 @@ class TitleSubtitle extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(13.0),
           child: Text(
-            "Just Imagine your favourite anime character are talking to you and assisting in your problems",
+            subtitle,
             softWrap: true,
             maxLines: 2,
             textAlign: TextAlign.center,

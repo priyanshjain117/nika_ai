@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:nika_ai/screens/home.dart';
 import 'package:nika_ai/screens/onboarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -18,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    // Start fade out after 1.5s
+    // Start fade out after 1s
     Timer(const Duration(milliseconds: 1000), () {
       setState(() {
         _opacity = 0.0;

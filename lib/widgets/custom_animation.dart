@@ -7,6 +7,9 @@ class CustomAnimation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      return Lottie.asset('assets/lottie/$name.json',height: 300);
+      return Padding(
+        padding: EdgeInsets.only(bottom: name!='dog'? 35.0:0),
+        child: Lottie.asset('assets/lottie/$name.json',height: 300),
+      );
   }
 }

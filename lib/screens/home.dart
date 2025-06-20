@@ -18,43 +18,52 @@ class HomeScreen extends StatelessWidget {
             end: Alignment.bottomRight,
           ),
         ),
-        child: Column(
-          children: [
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                Container(
-                  height: 250, // Added height
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Color(0xFFFF5722),
-                        Colors.transparent,
-                      ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
+        child: SafeArea(
+          child: Column(
+            children: [
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    height: 250, // Added height
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Color.fromARGB(0, 205, 32, 32),
+                          Color.fromARGB(255, 213, 87, 48),
+                          Color.fromARGB(0, 237, 32, 32),
+                        ],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 50),
-                  child: Hero(
-                    tag: ObjectKey(69),
-                    child: Image.asset(
-                      'assets/images/home_luffy.png',
-                      height: 200,
-                    ),
+                  Column(
+                    children: [
+                      Hero(
+                        tag: ObjectKey(69),
+                        child: Image.asset(
+                          'assets/images/home_luffy.png',
+                          height: 250,
+                        ),
+                      ),
+                      const SizedBox(height: 14),
+                      Text(
+                        "Freedom to Ask, Power to Know!!",
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium!
+                            .copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 14),
-            Text("Freedom to Ask, Power to Know!!",
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                      fontWeight: FontWeight.bold,
-                    )),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
